@@ -1,4 +1,6 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendNotification(req, res) {
     try {
@@ -13,16 +15,8 @@ async function sendNotification(req, res) {
 
         const user = req.user;
 
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.MAIL_USER,
-                pass: process.env.MAIL_PASS
-            }
-        });
-
-        await transporter.sendMail({
-            from: process.env.MAIL_USER,
+        await resend.emails.send({
+            from: "Xenora <onboarding@resend.dev>",
             to: process.env.OWNER_EMAIL,
             subject: "New XENORA Customer Enquiry",
             text: `
